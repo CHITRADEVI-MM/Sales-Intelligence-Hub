@@ -1,1 +1,1 @@
-# Sales-Management-System
+# Sales-Intelligence-Hub
