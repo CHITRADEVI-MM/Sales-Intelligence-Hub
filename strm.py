@@ -235,15 +235,15 @@ if not st.session_state.logged_in:
         else:
             st.error("Invalid username or password")
 
-# MAIN APPLICATION
+# ------------------- MAIN APPLICATION -------------------
 else:
     st.sidebar.title(f"Welcome, {st.session_state.username}")
     st.sidebar.write(f"Role: {st.session_state.role}")
     st.sidebar.write(f"Branch: {get_branch_name(st.session_state.branch_id)}")
     st.sidebar.divider()
 
-    # LEFT SIDE NAVIGATION
-    menu = st.sidebar.radio("Modules", ["Dashboard", "Add Sale", "Add Payment", "SQL Analysis"]) 
+    # LEFT SIDE NAVIGATION - Dashboard first
+    menu = st.sidebar.radio("Modules", ["Dashboard", "Add Sale", "Add Payment", "SQL Analysis"])
 
     if st.sidebar.button("Logout"):
         st.session_state.logged_in = False
@@ -251,7 +251,7 @@ else:
 
     # ------------------- DASHBOARD -------------------
     if menu == "Dashboard":
-        st.title("Sales Dashboard")
+        st.title("Sales Analysis")
 
         col_main, col_filter = st.columns([3, 1])
 
@@ -273,11 +273,15 @@ else:
             )
             collection_rate = (received / gross * 100) if gross > 0 else 0
 
-            c1, c2, c3, c4 = st.columns(4)
-            c1.metric("Total Sales", f"Rs. {gross:,.2f}")
-            c2.metric("Amount Received", f"Rs. {received:,.2f}")
-            c3.metric("Amount Pending", f"Rs. {pending:,.2f}")
-            c4.metric("Collection Rate", f"{collection_rate:.2f}%")
+            st.subheader("KPI Summary")
+
+            c1, c2 = st.columns(2)
+            c1.metric("Total Sales", f"Rs. {gross:,.0f}")
+            c2.metric("Amount Received", f"Rs. {received:,.0f}")
+
+            c3, c4 = st.columns(2)
+            c3.metric("Amount Pending", f"Rs. {pending:,.0f}")
+            c4.metric("Collection Rate", f"{collection_rate:.1f}%")
 
             st.divider()
             st.subheader("Sales Records")
